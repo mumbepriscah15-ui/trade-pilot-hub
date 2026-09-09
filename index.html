@@ -1,99 +1,72 @@
-<!doctype html>
-<html lang="en" dir="auto" class="light">
-    <head>
-        <!-- Google Tag Manager -->
-        <script>
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-                var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', 'GTM-KV9538TF');
-        </script>
-        <!-- End Google Tag Manager -->
-
-        <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="<%= assetPrefix %>/deriv-logo.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-        <meta name="title" content="Automate Your Trades | Deriv Bot" />
-        <meta
-            name="description"
-            content="Import your current bot or learn how to create a trading bot from scratch with our detailed guides, FAQs, and tutorials. Start with a quick strategy!"
-        />
-        <meta property="og:title" content="Deriv Bot" />
-        <meta
-            property="og:description"
-            content="Import your current bot or learn how to create a trading bot from scratch with our detailed guides, FAQs, and tutorials. Start with a quick strategy!"
-        />
-        <title>Automate Your Trades | Deriv Bot</title>
-        <style>
-            :root {
-                font-size: 62.5%;
-            }
-        </style>
-    </head>
-
-    <body class="body theme theme--light">
-        <!-- Google Tag Manager (noscript) -->
-        <noscript
-            ><iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-KV9538TF"
-                height="0"
-                width="0"
-                style="display: none; visibility: hidden"
-            ></iframe
-        ></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-
-        <div id="modal_root" class="modal-root"></div>
-        <div id="popup_root" class="popup-root"></div>
-        <div id="root"></div>
-        <!-- LiveChat script -->
-        <script type="text/javascript" defer>
-            window.__lc = window.__lc || {};
-            window.__lc.license = 12049137;
-            window.__lc.asyncInit = true;
-            (function (n, t, c) {
-                function i(n) {
-                    return e._h ? e._h.apply(null, n) : e._q.push(n);
-                }
-                var e = {
-                    _q: [],
-                    _h: null,
-                    _v: '2.0',
-                    on: function () {
-                        i(['on', c.call(arguments)]);
-                    },
-                    once: function () {
-                        i(['once', c.call(arguments)]);
-                    },
-                    off: function () {
-                        i(['off', c.call(arguments)]);
-                    },
-                    get: function () {
-                        if (!e._h) throw new Error('[LiveChatWidget] You can’t use getters before load.');
-                        return i(['get', c.call(arguments)]);
-                    },
-                    call: function () {
-                        i(['call', c.call(arguments)]);
-                    },
-                    init: function () {
-                        setTimeout(() => {
-                            var n = t.createElement('script');
-                            ((n.async = !0),
-                                (n.type = 'text/javascript'),
-                                (n.src = 'https://cdn.livechatinc.com/tracking.js'),
-                                t.head.appendChild(n));
-                        }, 3000);
-                    },
-                };
-                (!n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e));
-            })(window, document, [].slice);
-        </script>
-        <!-- End LiveChat script -->
-    </body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DERIV PILOT HUB - Trading System</title>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#0a0a0f;color:#fff;overflow:hidden}
+#loader{position:fixed;inset:0;background:#0f0a1e;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.circle{width:60px;height:60px;border:3px solid #222;border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:20px 0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bar{width:300px;height:4px;background:#222;border-radius:2px;overflow:hidden;margin-top:20px}
+.fill{height:100%;background:#fff;width:0%;transition:width 0.2s}
+.header{height:48px;background:#15151e;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;padding:0 12px}
+.nav{display:flex;gap:6px;padding:10px;background:#0f0f14;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #222}
+.tab{padding:8px 14px;border-radius:8px;background:#1e1e2a;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #2a2a3a}
+.tab.active{background:#7c3aed;border-color:#7c3aed}
+.main{display:flex;height:calc(100vh - 96px)}
+.left{width:380px;background:#fff;color:#000;overflow-y:auto}
+.left.dark{background:#15151e;color:#fff}
+.content{flex:1;background:#0f0f14;overflow-y:auto;position:relative}
+.card{padding:14px;border-bottom:1px solid #eee}
+.bot-row{display:flex;justify-content:space-between;gap:10px;padding:12px;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#f9fafb}
+.btn-load{background:#7c3aed;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer}
+.digit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px}
+.d-circle{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid #e5e7eb;background:#fff;position:relative}
+.d-circle b{font-size:18px}.d-circle small{font-size:10px;color:#888}
+.d-circle.active{border-color:#10b981;transform:scale(1.1);box-shadow:0 0 15px #10b981}
+.big-digit{width:70px;height:70px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:10px auto;border:3px solid #7c3aed}
+.market-item{display:flex;justify-content:space-between;padding:12px;border-radius:10px;margin:4px 8px;background:#f9fafb;cursor:pointer;border:1px solid transparent}
+.market-item.active{background:#ede9fe;border-color:#7c3aed}
+.payout{display:flex;gap:10px;padding:12px}
+.payout button{flex:1;padding:14px;border-radius:12px;border:none;font-weight:800;font-size:14px;cursor:pointer}
+.over{background:#10b981;color:#fff}.under{background:#ef4444;color:#fff}
+select,input{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin:6px 0;background:#fff;color:#000}
+@media(max-width:800px){.main{flex-direction:column}.left{width:100%;height:50vh}.content{height:50vh}}
+</style>
+</head>
+<body>
+<div id="loader">
+<h1>DERIV PILOT HUB</h1>
+<p style="letter-spacing:6px;font-size:10px;color:#aaa">TRADING SYSTEM</p>
+<div class="circle"></div>
+<div id="loadText">Please wait while we connect to the server...</div>
+<small style="margin-top:10px;color:#888">Powered by <span style="color:#ff444f">Deriv</span></small>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<div id="pct" style="margin-top:8px">20%</div>
+</div>
+<div class="header">
+<div style="font-weight:800;letter-spacing:2px">DERIV PILOT HUB</div>
+<div style="display:flex;gap:6px;align-items:center"><span style="background:#1e1e2a;color:#fff;padding:4px 8px;border-radius:6px;font-size:11px">USD - 20.00 USD</span><span style="background:#7c3aed;padding:4px 8px;border-radius:6px;font-size:11px">Cashier</span></div>
+</div>
+<div class="nav" id="nav"></div>
+<div class="main">
+<div class="left dark" id="leftPanel"></div>
+<div class="content" id="rightPanel"></div>
+</div>
+<script>
+const markets=[
+{name:"Volatility 100 (1s) Index",sym:"R_100_1s",tv:"DERIV:Volatility100_1s"},
+{name:"Volatility 10 (1s) Index",sym:"R_10_1s",tv:"DERIV:Volatility10_1s"},
+{name:"Volatility 25 (1s) Index",sym:"R_25_1s",tv:"DERIV:Volatility25_1s"},
+{name:"Volatility 50 (1s) Index",sym:"R_50_1s",tv:"DERIV:Volatility50_1s"},
+{name:"Volatility 75 (1s) Index",sym:"R_75_1s",tv:"DERIV:Volatility75_1s"},
+{name:"Volatility 90 (1s) Index",sym:"R_90_1s",tv:"DERIV:Volatility90_1s"},
+{name:"Volatility 10 Index",sym:"R_10",tv:"DERIV:Volatility10"},
+{name:"Volatility 100 Index",sym:"R_100",tv:"DERIV:Volatility100"},
+];
+const bots=[
+["New Version Bandwagon Bot 2026","This bot trades rise/fall, even/odd, matches/differ, and over/under."],
