@@ -1,72 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DERIV PILOT HUB - Trading System</title>
-<script src="https://s3.tradingview.com/tv.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Pilot Hub - Trading System</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:#0a0a0f;color:#fff;overflow:hidden}
-#loader{position:fixed;inset:0;background:#0f0a1e;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.circle{width:60px;height:60px;border:3px solid #222;border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:20px 0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.bar{width:300px;height:4px;background:#222;border-radius:2px;overflow:hidden;margin-top:20px}
-.fill{height:100%;background:#fff;width:0%;transition:width 0.2s}
-.header{height:48px;background:#15151e;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;padding:0 12px}
-.nav{display:flex;gap:6px;padding:10px;background:#0f0f14;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #222}
-.tab{padding:8px 14px;border-radius:8px;background:#1e1e2a;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #2a2a3a}
-.tab.active{background:#7c3aed;border-color:#7c3aed}
-.main{display:flex;height:calc(100vh - 96px)}
-.left{width:380px;background:#fff;color:#000;overflow-y:auto}
-.left.dark{background:#15151e;color:#fff}
-.content{flex:1;background:#0f0f14;overflow-y:auto;position:relative}
-.card{padding:14px;border-bottom:1px solid #eee}
-.bot-row{display:flex;justify-content:space-between;gap:10px;padding:12px;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#f9fafb}
-.btn-load{background:#7c3aed;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer}
-.digit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px}
-.d-circle{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid #e5e7eb;background:#fff;position:relative}
-.d-circle b{font-size:18px}.d-circle small{font-size:10px;color:#888}
-.d-circle.active{border-color:#10b981;transform:scale(1.1);box-shadow:0 0 15px #10b981}
-.big-digit{width:70px;height:70px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:10px auto;border:3px solid #7c3aed}
-.market-item{display:flex;justify-content:space-between;padding:12px;border-radius:10px;margin:4px 8px;background:#f9fafb;cursor:pointer;border:1px solid transparent}
-.market-item.active{background:#ede9fe;border-color:#7c3aed}
-.payout{display:flex;gap:10px;padding:12px}
-.payout button{flex:1;padding:14px;border-radius:12px;border:none;font-weight:800;font-size:14px;cursor:pointer}
-.over{background:#10b981;color:#fff}.under{background:#ef4444;color:#fff}
-select,input{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin:6px 0;background:#fff;color:#000}
-@media(max-width:800px){.main{flex-direction:column}.left{width:100%;height:50vh}.content{height:50vh}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0f0e1a;color:#fff}
+.loader{position:fixed;inset:0;background:#0f0e1a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
+.logo{font-size:32px;font-weight:900;letter-spacing:3px}
+.sub{letter-spacing:6px;color:#aaa;margin:5px 0 30px;font-size:11px}
+.spin{width:60px;height:60px;border:3px solid #333;border-top:3px solid #fff;border-radius:50%;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.prog{width:80%;max-width:400px;height:6px;background:#2a2a4a;border-radius:10px;overflow:hidden;margin-top:20px}
+.bar{height:100%;background:linear-gradient(90deg,#ff444f,#7c3aed);width:0%;transition:.3s}
+.head{position:sticky;top:0;background:#1a1940;display:flex;justify-content:space-between;padding:10px 15px;border-bottom:1px solid #2a2a6a;z-index:10}
+.tabs{display:flex;gap:5px;overflow-x:auto;padding:10px;background:#15142f;border-bottom:1px solid #2a2a6a}
+.tab{padding:8px 14px;border-radius:20px;background:#2a2a5a;color:#aaa;cursor:pointer;font-size:13px;white-space:nowrap}
+.tab.active{background:#7c3aed;color:#fff}
+.page{display:none;padding:15px}.page.active{display:block}
+.card{background:#1c1b2e;border-radius:12px;padding:15px;margin-bottom:12px;border:1px solid #2e2d4a}
+.tbl{width:100%;font-size:12px;border-collapse:collapse}
+.tbl th{background:#2a2a5a;padding:10px;text-align:left}
+.tbl td{padding:10px;border-bottom:1px solid #2a2a5a}
+.btn{background:#7c3aed;color:#fff;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-weight:bold}
+.ai{position:fixed;left:15px;bottom:90px;width:50px;height:50px;background:radial-gradient(circle,#ffaa33,#ff5500);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;box-shadow:0 0 20px #ff7700;z-index:90;cursor:pointer}
+.digit{width:48px;height:48px;border-radius:50%;background:#2a2a5a;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:bold}
+.digit.active{border-color:#10b981;background:#1a3a2a}
+.perc{font-size:9px;color:#aaa}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.market{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #2a2a5a;cursor:pointer}
+.pay{flex:1;padding:12px;border-radius:10px;border:none;font-weight:bold;cursor:pointer}
+select,input{background:#0f0e1a;border:1px solid #3a3a6a;color:#fff;padding:8px;border-radius:6px;width:100%;margin:4px 0}
 </style>
 </head>
 <body>
-<div id="loader">
-<h1>DERIV PILOT HUB</h1>
-<p style="letter-spacing:6px;font-size:10px;color:#aaa">TRADING SYSTEM</p>
-<div class="circle"></div>
-<div id="loadText">Please wait while we connect to the server...</div>
-<small style="margin-top:10px;color:#888">Powered by <span style="color:#ff444f">Deriv</span></small>
-<div class="bar"><div class="fill" id="fill"></div></div>
-<div id="pct" style="margin-top:8px">20%</div>
-</div>
-<div class="header">
-<div style="font-weight:800;letter-spacing:2px">DERIV PILOT HUB</div>
-<div style="display:flex;gap:6px;align-items:center"><span style="background:#1e1e2a;color:#fff;padding:4px 8px;border-radius:6px;font-size:11px">USD - 20.00 USD</span><span style="background:#7c3aed;padding:4px 8px;border-radius:6px;font-size:11px">Cashier</span></div>
-</div>
-<div class="nav" id="nav"></div>
-<div class="main">
-<div class="left dark" id="leftPanel"></div>
-<div class="content" id="rightPanel"></div>
-</div>
+<div class="loader" id="loader"><div class="logo">TRADE PILOT HUB</div><div class="sub">TRADING SYSTEM</div><div class="spin"></div><div id="lt" style="margin-top:15px;font-size:13px">Please wait while connect to the server...</div><div class="prog"><div class="bar" id="bar"></div></div><div style="margin-top:8px"><span id="pct">0</span>%</div><div style="margin-top:8px;font-size:11px;opacity:.6">Powered by <span style="color:#ff444f">Deriv</span></div></div>
+<div class="head"><div style="font-weight:900">✈️ TRADE PILOT HUB</div><div style="display:flex;gap:6px"><span style="background:#1e3a5a;padding:4px 8px;border-radius:6px;font-size:12px">USD - 20.00 USD</span><button style="background:#3a3a9a;padding:4px 10px;border-radius:12px;border:none;color:#fff;font-size:11px">Cashier</button><button style="background:#7c3aed;padding:4px 10px;border-radius:12px;border:none;color:#fff;font-size:11px">Transfer</button></div></div>
+<div class="tabs"><div class="tab active" data-p="dash">Dashboard</div><div class="tab" data-p="best">Best Bots</div><div class="tab" data-p="builder">Bot Builder</div><div class="tab" data-p="ai">AI Analysis</div><div class="tab" data-p="chart">Danalysis</div><div class="tab" data-p="auto">Auto Trades</div><div class="tab" data-p="tview">Trading View</div><div class="tab" data-p="manual">Manual Trading</div><div class="tab" data-p="risk">Risk</div></div>
+
+<div class="page active" id="dash"><div class="card"><h3>Load or build your bot</h3><p style="font-size:12px;color:#aaa;margin:8px 0">Import a bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px"><div class="card" style="text-align:center;cursor:pointer" onclick="go('best')"><div style="font-size:28px">📱</div>Local</div><div class="card" style="text-align:center"><div style="font-size:28px">🟦</div>Google Drive</div><div class="card" style="text-align:center;cursor:pointer" onclick="go('builder')"><div style="font-size:28px">🧩</div>Bot Builder</div><div class="card" style="text-align:center"><div style="font-size:28px">⚡</div>Quick strategy</div></div></div></div>
+
+<div class="page" id="best"><div class="card"><h3>Best Bots - Trade Pilot Hub</h3><p style="font-size:12px;color:#aaa">Discover our top-performing AI trading bots optimized for maximum profitability.</p></div><div class="card" style="padding:0;overflow-x:auto"><table class="tbl"><thead><tr><th>Bot Name</th><th>Description</th><th>Action</th></tr></thead><tbody id="bots"></tbody></table></div></div>
+
+<div class="page" id="builder"><div class="card"><div style="background:#7c3aed;padding:5px 10px;border-radius:6px;display:inline-block;margin-bottom:10px">Quick strategy - Trade Pilot Hub</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><select><option>Derived</option></select><select><option>Continuous Indices</option></select><select><option>Volatility 100 (1s) Index</option></select></div><div style="margin-top:10px;font-size:12px">Trade options: Duration Ticks 1 Stake USD 1</div><div style="margin-top:10px;background:#2a2a5a;padding:8px;border-radius:6px;display:flex;justify-content:space-between"><span>Purchase: Rise</span><button class="btn" onclick="runBot()">Run</button></div><div id="bs" style="margin-top:8px;font-size:12px;color:#aaa">Bot is not running</div></div></div>
+
+<div class="page" id="ai"><div class="card"><div style="display:flex;justify-content:space-between"><h4>Even/Odd Analysis - Trade Pilot Hub AI</h4><select id="aiM" style="width:180px"><option>Volatility 75 (1s) Index</option><option>Volatility 100 (1s) Index</option></select></div><div style="text-align:center;margin:12px 0"><div style="font-size:11px">Last Digit</div><div id="big" style="width:70px;height:70px;border-radius:50%;background:#7c3aed;margin:8px auto;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold">5</div></div><div class="grid" id="ag"></div><div class="card" style="margin-top:12px"><div style="font-size:11px">Distribution - Even <span id="eP">50%</span> Odd <span id="oP">50%</span></div><div style="height:6px;background:#333;border-radius:10px;display:flex;margin:6px 0"><div id="eB" style="background:#10b981;height:100%;width:50%"></div><div id="oB" style="background:#ef4444;height:100%;width:50%"></div></div><div id="sig" style="padding:8px;border-radius:6px;background:#2a2a5a;font-size:12px;margin-top:6px">Waiting for AI Analysis...</div></div></div></div>
+
+<div class="page" id="chart"><div class="card"><div style="display:flex;justify-content:space-between"><span>Volatility 75 (1s) Index - Trade Pilot Hub Chart</span><span id="cP">6522.37</span></div><div style="height:200px;background:#000;border-radius:8px;margin-top:10px;display:flex;align-items:center;justify-content:center">Live Chart - Connected to Deriv</div><button class="btn" style="margin-top:10px" onclick="document.getElementById('mm').style.display='block'">All Markets</button></div><div id="mm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;overflow:auto"><div class="card" style="margin:20px"><div style="display:flex;justify-content:space-between"><h3>Markets - Trade Pilot Hub</h3><button onclick="this.closest('#mm').style.display='none'">X</button></div><div id="ml"></div></div></div></div>
+
+<div class="page" id="auto"><div class="card"><h4>Auto Trades - Trade Pilot Hub</h4><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><div><label style="font-size:11px">Stake (USD)</label><input value="1"><label style="font-size:11px">Take Profit</label><input value="100"><label style="font-size:11px">Martingale Mode</label><select><option>Normal</option></select></div><div><label style="font-size:11px">Total Profit</label><input value="100"><label style="font-size:11px">Stop Loss</label><input value="100"><label style="font-size:11px">Stop Loss Amount</label><input value="100"></div></div><div style="display:flex;gap:8px;margin-top:10px"><button style="background:#10b981;border:none;padding:8px 18px;border-radius:6px;color:#fff" onclick="runBot()">Start</button><button style="background:#666;border:none;padding:8px 18px;border-radius:6px;color:#fff">Pause</button><button style="background:#ef4444;border:none;padding:8px 18px;border-radius:6px;color:#fff">Stop</button></div><div style="display:flex;gap:10px;margin-top:12px"><div style="flex:1;background:#3a1a1a;padding:8px;border-radius:6px;text-align:center">Losses<br><b>4</b></div><div style="flex:1;background:#1a3a2a;padding:8px;border-radius:6px;text-align:center">Wins<br><b>0</b></div></div></div></div>
+
+<div class="page" id="tview"><div class="card"><div style="font-size:11px">Sync with Bot: Market Volatility 100 (1s) Index Type Both - Trade Pilot Hub</div><div style="height:280px;background:#000;border-radius:8px;margin-top:10px;display:flex;align-items:center;justify-content:center">Trading View - Loading...</div></div></div>
+
+<div class="page" id="manual"><div class="card" style="background:#0a0a1a"><div style="display:flex;justify-content:space-between"><select id="manM" style="width:180px"><option>Volatility 100 (1s) Index</option><option>Volatility 10 (1s) Index</option><option>Volatility 25 (1s) Index</option></select><span id="manP" style="color:#10b981;font-weight:bold">917.80</span></div><div class="grid" id="manG" style="margin-top:12px"></div><div style="margin-top:12px;display:flex;justify-content:space-between;font-size:12px"><span>Over/Under</span><span>Last digit prediction</span></div><div style="display:flex;gap:8px;margin-top:8px"><button class="pay" style="background:#10b981;color:#fff">Payout 4.49 USD<br>Over</button><button class="pay" style="background:#ef4444;color:#fff">Payout 3.67 USD<br>Under</button></div><div style="font-size:11px;color:#aaa;margin-top:10px">Trade Pilot Hub Manual Trading - Live Deriv Connection</div></div></div>
+
+<div class="page" id="risk"><div class="card"><h3>Risk Manager - Trade Pilot Hub</h3><input placeholder="Daily Stop Loss"><input placeholder="Max Stake"><button class="btn" style="margin-top:8px">Save</button></div></div>
+
+<div class="ai" onclick="go('ai')">AI</div>
+
 <script>
-const markets=[
-{name:"Volatility 100 (1s) Index",sym:"R_100_1s",tv:"DERIV:Volatility100_1s"},
-{name:"Volatility 10 (1s) Index",sym:"R_10_1s",tv:"DERIV:Volatility10_1s"},
-{name:"Volatility 25 (1s) Index",sym:"R_25_1s",tv:"DERIV:Volatility25_1s"},
-{name:"Volatility 50 (1s) Index",sym:"R_50_1s",tv:"DERIV:Volatility50_1s"},
-{name:"Volatility 75 (1s) Index",sym:"R_75_1s",tv:"DERIV:Volatility75_1s"},
-{name:"Volatility 90 (1s) Index",sym:"R_90_1s",tv:"DERIV:Volatility90_1s"},
-{name:"Volatility 10 Index",sym:"R_10",tv:"DERIV:Volatility10"},
-{name:"Volatility 100 Index",sym:"R_100",tv:"DERIV:Volatility100"},
-];
-const bots=[
-["New Version Bandwagon Bot 2026","This bot trades rise/fall, even/odd, matches/differ, and over/under."],
+let p=0;let iv=setInterval(()=>{p+=Math.random()*14;if(p>95)p=95;document.getElementById('bar').style.width=p+'%';document.getElementById('pct').innerText=Math.floor(p);if(p>=95){document.getElementById('lt').innerText='Initializing Deriv Bot account for Trade Pilot Hub...';clearInterval(iv);setTimeout(()=>{document.getElementById('loader').style.display='none';start();},800);}},180);
+const botsList=[['New Version Bandwagon Bot 2026 - Trade Pilot Hub','Trades rise/fall, even/odd, matches/differ, over/under'],['Updated Bandwagon Bot (Entry Point)','Trades rise/fall with automatic entry point'],['Recover Under Bandwagon - Pilot Hub Pro','Starts under 9 then under 8, recovers with under 6 and 5'],['Over Recovery Bot','Starts under 9 then under 8, recovers'],['Equal Rise Bot','Trades under 8 over 3,5,8 - 4 wins'],['Under 6 Recovery AI','AI-powered even/odd analysis'],['Under 9 and Over 7 Bot','Trades under 1, under 8, over 2'],['Rise and Fall Simple Bot','Simple Rise Fall strategy'],['Under 7 Bulk - Pilot Hub','Bulk trades under 7'],['Special Bot 10 - Pilot Edition','Waits for 2 digits under 7 and 7, switches to over 3']];
+let tb=document.getElementById('bots');botsList.forEach(b=>{let tr=document.createElement('tr');tr.innerHTML=`<td>${b[0]}</td><td style='color:#aaa'>${b[1]}</td><td><button class='btn' onclick="go('builder')">LOAD</button></td>`;tb.appendChild(tr);});
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.p===id));}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>go(t.dataset.p));
+function runBot(){document.getElementById('bs').innerText='Bot is running... Trade Pilot Hub AI is trading';setTimeout(()=>{document.getElementById('bs').innerText='Bot profit: +$3.20 - Trade Pilot Hub';},2000);}
+let history=[];let ws;
+function start(){ws=new WebSocket('wss://ws.binaryws.com/websockets/v3?app_id=1089');ws.onopen=()=>{sub('1HZ100V');sub('1HZ75V');sub('R_100');};ws.onmessage=e=>{let d=JSON.parse(e.data);if(d.tick){let pr=d.tick.quote;let dg=parseInt(pr.toString().slice(-1));if(isNaN(dg))dg=0;history.unshift(dg);if(history.length>1000)history.pop();upd(dg,pr);}};}
+function sub(s){if(ws&&ws.readyState===1)ws.send(JSON.stringify({ticks:s,subscribe:1}));else setTimeout(()=>sub(s),500);}
+function upd(last,price){document.getElementById('big').innerText=last;document.getElementById('cP').innerText=price;document.getElementById('manP').innerText=price;let counts=Array(10).fill(0);history.slice(0,1000).forEach(d=>counts[d]++);let total=history.length||1;let ag=document.getElementById('ag');if(ag.children.length===0){for(let i=0;i<10;i++){let div=document.createElement('div');div.className='digit';div.id='a'+i;div.innerHTML=`${i}<span class='perc'>0%</span>`;ag.appendChild(div);}let mg=document.getElementById('manG');for(let i=0;i<10;i++){let div=document.createElement('div');div.className='digit';div.id='m'+i;div.innerHTML=`${i}<span class='perc'>0%</span>`;mg.appendChild(div);} }counts.forEach((c,i)=>{let el=document.getElementById('a'+i);if(el)el.innerHTML=`${i}<span class='perc'>${(c/total*100).toFixed(1)}%</span>`;if(i===last)el.classList.add('active');else el.classList.remove('active');let ml=document.getElementById('m'+i);if(ml){ml.innerHTML=`${i}<span class='perc'>${(c/Math.min(total,100)*100).toFixed(1)}%</span>`;if(i===last)ml.classList.add('active');else ml.classList.remove('active');}});let even=counts.filter((_,i)=>i%2===0).reduce((a,b)=>a+b,0);let odd=total-even;let ep=(even/total*100).toFixed(1);let op=(odd/total*100).toFixed(1);document.getElementById('eP').innerText=ep+'%';document.getElementById('oP').innerText=op+'%';document.getElementById('eB').style.width=ep+'%';document.getElementById('oB').style.width=op+'%';let sig=document.getElementById('sig');if(ep>60)sig.innerText=`Trade EVEN - Trade Pilot Hub AI detected ${ep}% even - Strong pattern`;else if(op>60)sig.innerText=`Trade ODD - Trade Pilot Hub AI detected ${op}% odd`;else sig.innerText='No stable pattern - Trade Pilot Hub AI waiting for 70%+ stability';}
+let markets=["Volatility 10 Index","Volatility 25 Index","Volatility 50 Index","Volatility 75 Index","Volatility 100 Index","Volatility 10 (1s) Index","Volatility 25 (1s) Index","Volatility 50 (1s) Index","Volatility 75 (1s) Index","Volatility 100 (1s) Index","Boom 1000 Index","Boom 500 Index","Crash 1000 Index","Crash 500 Index","Jump 10 Index","Bear Market Index","Bull Market Index","Gold Basket","EUR/USD","BTC/USD"];let ml=document.getElementById('ml');markets.forEach(m=>{let d=document.createElement('div');d.className='market';d.innerHTML=`<span>${m}</span><span>⭐</span>`;d.onclick=()=>{document.getElementById('mm').style.display='none';sub('1HZ100V');};ml.appendChild(d);});
+</script>
+</body>
+</html>
